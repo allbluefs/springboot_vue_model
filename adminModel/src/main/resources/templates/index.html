@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>管理系统</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <script src="/statics/libs/vue.min.js"></script>
+    <script src="/statics/libs/jquery.min.js"></script>
+    <link rel="stylesheet" href="/statics/plugins/element-ui/lib/theme-chalk/index.css">
+    <script src="/statics/plugins/element-ui/lib/index.js"></script>
+
+</head>
+<body>
+<div id='app' style="height: 100%">
+    <el-container style="height: 100%; border: 0px solid #eee">
+        <el-header>
+            <el-header style="">
+                <el-menu
+                        default-active=""
+                        class="el-menu-demo"
+                        mode="horizontal"
+                        @select="handleSelect"
+                        background-color="#545c64"
+                        text-color="#fff"
+                        active-text-color="#ffd04b">
+                    <span style="position: absolute;z-index: 999;font-family: '华文行楷', sans-serif;font-size: larger;color: white">管理系统</span>
+                    <el-submenu style="float: right" index="">
+                        <template slot="title">
+<!--                            <img style="width: 50px; height: 50px;border-radius:100%;"-->
+<!--                                 :src="user.photo"/> -->
+                            {{user.chineseName}}
+                        </template>
+                        <el-menu-item @click="showInfo">修改个人信息</el-menu-item>
+                        <el-menu-item @click="logout">退出</el-menu-item>
+                    </el-submenu>
+                </el-menu>
+            </el-header>
+        </el-header>
+        <el-container style="height: 100%">
+            <el-aside width="240px" style="height: 100%">
+                <el-menu
+                        default-active="2"
+                        class="el-menu-vertical-demo"
+                        @open="handleOpen"
+                        @close="handleClose"
+                        @select="changeUrl"
+                        background-color="#545c64"
+                        text-color="#fff"
+                        active-text-color="#ffd04b"
+                        style="height: 100%">
+                    <!--管理员-->
+                    <el-menu-item index="modules/sys/user.html" v-if="user.userType === 3">
+                        <i class="el-icon-user-solid"></i>
+                        <span slot="title">用户管理</span>
+                    </el-menu-item>
+                </el-menu>
+            </el-aside>
+
+            <el-main>
+                <iframe scrolling="yes" frameborder="0"
+                        style="width:100%;height: 95%; overflow:visible;background:#fff;" :src="src"
+                        id="mainIframe"></iframe>
+            </el-main>
+        </el-container>
+    </el-container>
+
+    <!--修改个人信息-->
+    <el-dialog title="修改个人信息" :visible.sync="dialogFormVisible">
+        <el-form :model="user" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+            <el-form-item label="用户名" prop="username">
+                <el-input v-model="user.username" auto-complete="new-password"></el-input>
+            </el-form-item>
+            <el-form-item label="姓名" prop="chineseName">
+                <el-input v-model="user.chineseName" auto-complete="new-password"></el-input>
+            </el-form-item>
+            <el-form-item label="密码" prop="password">
+                <el-input type="password" v-model="user.password" auto-complete="new-password" show-password></el-input>
+            </el-form-item>
+            <el-form-item label="手机号" prop="phoneNumber">
+                <el-input v-model="user.phoneNumber"></el-input>
+            </el-form-item>
+            <el-form-item label="用户类型" prop="userType">
+                <el-tag type="success" size="small" v-if="user.userType===1">普通用户</el-tag>
+                <el-tag type="success" size="small" v-if="user.userType===2">员工</el-tag>
+                <el-tag type="success" size="small" v-if="user.userType===3">管理员</el-tag>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="updateInfo">确 定</el-button>
+        </div>
+    </el-dialog>
+
+</div>
+
+
+</body>
+<style>
+    html {
+        height: 100%;
+    }
+
+    body {
+        margin: 0;
+        height: 100%;
+    }
+
+    .el-header {
+        background-color: #545c64;
+        color: #333;
+        line-height: 60px;
+    }
+
+    .el-aside {
+        color: #333;
+    }
+</style>
+<script>
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            src: "main.html",
+            menuList: [],
+            user: {},
+            dialogFormVisible: false,
+            rules: {
+                username: [
+                    { required: true, message: '请输入用户名', trigger: 'blur' }
+                ],
+                password: [
+                    { required: true, message: '请输入密码', trigger: 'blur' },
+                    { min: 3, message: '密码最少3位', trigger: 'blur' }
+                ],
+                phoneNumber: [
+                    {required: true, message: '请输入电话', trigger: 'blur'},
+                    {
+                        validator: function (rule, value, callback) {
+                            let MobileRegex = /^1[0-9]{10}$/;
+                            if (!MobileRegex.test(value)) {
+                                callback(new Error('手机号码格式不正确！'))
+                            } else {
+                                callback();
+                            }
+                        }, trigger: 'blur'
+                    }
+                ],
+            }
+        },
+        methods: {
+            changeUrl(key, keyPath) {
+                if (key != null && key !== '') {
+                    vm.src = key;
+                }
+            },
+            handleSelect(key, keyPath) {
+                console.log(key, keyPath);
+            },
+            handleOpen(key, keyPath) {
+                console.log(key, keyPath);
+            },
+            handleClose(key, keyPath) {
+                console.log(key, keyPath);
+            },
+            updateInfo: function (event) {
+                this.$refs['ruleForm'].validate((valid) => {
+                    if (valid) {
+                        $.ajax({
+                            type: "POST",
+                            url: 'sys/user/update',
+                            contentType: "application/json",
+                            data: JSON.stringify(vm.user),
+                            // data: vm.user,
+                            success: function (r) {
+                                if (r.code === 0) {
+                                    Vue.prototype.$message({
+                                        type: 'success',
+                                        message: '操作成功!'
+                                    });
+                                    vm.dialogFormVisible=false;
+                                } else {
+                                    Vue.prototype.$message({
+                                        type: 'error',
+                                        message: r.msg
+                                    });
+                                }
+                            }
+                        });
+                    } else {
+                        return false;
+                    }
+                });
+
+            },
+            showInfo(){
+                this.dialogFormVisible=true;
+            },
+            logout: function () {
+                $.get("sys/logout", function (r) {
+                    window.location.href = "login.html"
+                })
+            },
+            getUser: function () {
+                $.getJSON("getLoginUserInfo", function (r) {
+                    vm.user = r;
+                });
+            },
+        },
+        created: function () {
+            this.getUser();
+        },
+    });
+</script>
+</html>

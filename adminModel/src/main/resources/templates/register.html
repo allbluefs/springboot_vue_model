@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="shortcut icon" href="/statics/images/onepiece.jpg">
+    <meta charset="UTF-8">
+    <title>图书商城</title>
+    <script src="/statics/libs/jquery.min.js"></script>
+    <script src="/statics/libs/vue.min.js"></script>
+    <script type='text/javascript' src='/statics/libs/particles.js'></script>
+    <script src="/statics/libs/bganimation.js"></script>
+    <link rel="stylesheet" href="/statics/plugins/element-ui/lib/theme-chalk/index.css">
+    <script src="/statics/plugins/element-ui/lib/index.js"></script>
+    <style>
+        /*解决Vue刷新一瞬间出现样式未加载完或者出现Vue代码问题*/
+        [v-cloak] {
+            display: none;
+        }
+
+        html {
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            height: 100%;
+        }
+
+        /*动态背景*/
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: 50% 50%;
+            background-repeat: no-repeat;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app">
+    <div id="particles-js">
+        <canvas class="particles-js-canvas-el" width="1322" height="774"
+                style="width: 100%; height: 100%;">
+        </canvas>
+    </div>
+    <el-container>
+        <el-main style="width: 40%;margin-left: 35%;margin-top: 10%;">
+            <el-card class="box-card" style="width: 40% ">
+                <h1 style="text-align: center">用户注册</h1>
+                <el-form :model="user" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm"
+                         style="width: 85%">
+                    <el-form-item label="用户名" prop="username">
+                        <el-input v-model.trim="user.username"></el-input>
+                    </el-form-item>
+                    <el-form-item label="密码" prop="password">
+                        <el-input type="password" v-model.trim="user.password" show-password></el-input>
+                    </el-form-item>
+                    <el-form-item label="姓名" prop="chineseName">
+                        <el-input v-model.trim="user.chineseName"></el-input>
+                    </el-form-item>
+                    <el-form-item label="电话" prop="phoneNumber">
+                        <el-input v-model.trim="user.phoneNumber"></el-input>
+                    </el-form-item>
+                    <el-form-item style="float: right">
+                        <el-button style="width: 128px" type="primary" @click="register">注册</el-button>
+                        <el-button style="width: 128px" @click="login">返回</el-button>
+                    </el-form-item>
+                </el-form>
+            </el-card>
+        </el-main>
+    </el-container>
+</div>
+</body>
+<script>
+    let vm = new Vue({
+        el: '#app',
+        data: {
+            user: {},
+            rules: {
+                username: [
+                    {required: true, message: '请输入用户名', trigger: 'blur'}
+                ],
+                password: [
+                    {required: true, message: '请输入密码', trigger: 'blur'},
+                    { min: 3, message: '密码最少3位', trigger: 'blur' }
+                ],
+                chineseName: [
+                    {required: true, message: '请输入姓名', trigger: 'blur'}
+                ],
+                phoneNumber: [
+                    {required: true, message: '请输入电话', trigger: 'blur'},
+                    {
+                        validator: function (rule, value, callback) {
+                            let MobileRegex = /^1[0-9]{10}$/;
+                            if (!MobileRegex.test(value)) {
+                                callback(new Error('手机号码格式不正确！'))
+                            } else {
+                                callback();
+                            }
+                        }, trigger: 'blur'
+                    }
+                ],
+                // email: [
+                //     {required: true, message: '请输入邮箱', trigger: 'blur'},
+                //     {
+                //         validator: function (rule, value, callback) {
+                //             let EmailRegex = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+                //             if (!EmailRegex.test(value)) {
+                //                 callback(new Error('邮箱格式不正确！'))
+                //             } else {
+                //                 callback();
+                //             }
+                //         }, trigger: 'blur'
+                //     }
+                // ]
+            }
+        },
+        methods: {
+            register() {
+                this.$refs['ruleForm'].validate((valid) => {
+                    if (valid) {
+                        $.ajax({
+                            type: "POST",
+                            url: "register",
+                            data: vm.user,
+                            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                            success: function (result) {
+                                if (result.code === 0) {//注册成功
+                                    Vue.prototype.$message({
+                                        type: 'success',
+                                        message: '注册成功!'
+                                    });
+                                    location.href = "/login.html";
+                                } else {
+                                    Vue.prototype.$message({
+                                        type: 'error',
+                                        message: result.msg
+                                    });
+                                }
+                            }
+                        });
+                    } else {
+                        return false;
+                    }
+                });
+            },
+            login() {
+                location.href = "login.html";
+            }
+        },
+        computed: {}
+    });
+</script>
+</html>
