@@ -90,6 +90,15 @@ public class UserController {
     }
 
     /**
+     * 删除
+     */
+    @RequestMapping("/deleteById/{userId}")
+    public R deleteById(@PathVariable("userId") Long userId) {
+        userService.deleteById(userId);
+        return R.ok();
+    }
+
+    /**
      * 用户名检测
      */
     @RequestMapping("/detect")

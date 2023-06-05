@@ -12,12 +12,6 @@
         <el-form-item>
           <el-button type="primary" @click="add">新增</el-button>
         </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="update">修改</el-button>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="danger" @click="del">删除</el-button>
-        </el-form-item>
       </el-form>
     </div>
 
@@ -55,13 +49,24 @@
           prop="phoneNumber"
           label="手机号">
       </el-table-column>
-      <!--            <el-table-column-->
-      <!--                    prop=""-->
-      <!--                    label="操作">-->
-      <!--                <template slot-scope="scope">-->
-      <!--                    <el-link type="primary" :underline="false" @click="aaa(scope.row.userId)">操作</el-link>-->
-      <!--                </template>-->
-      <!--            </el-table-column>-->
+      <el-table-column
+          prop=""
+          label="操作">
+        <template #default="scope">
+          <el-button type="primary" size="mini" circle
+                     @click="update(scope.row.userId)">
+            <el-icon>
+              <Edit/>
+            </el-icon>
+          </el-button>
+          <el-button type="danger" circle
+                     @click="del(scope.row.userId)">
+            <el-icon>
+              <Delete/>
+            </el-icon>
+          </el-button>
+        </template>
+      </el-table-column>
     </el-table>
 
     <div style="margin: 20px 30%">
@@ -80,13 +85,41 @@
   </div>
 
 
+  <el-dialog v-model="showInfo">
+    <el-form :model="user" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+      <el-form-item label="用户名" prop="username">
+        <el-input v-model="user.username" auto-complete="new-password"></el-input>
+      </el-form-item>
+      <el-form-item label="姓名" prop="chineseName">
+        <el-input v-model="user.chineseName" auto-complete="new-password"></el-input>
+      </el-form-item>
+      <el-form-item label="密码" prop="password">
+        <el-input type="password" v-model="user.password" auto-complete="new-password" show-password></el-input>
+      </el-form-item>
+      <el-form-item label="用户类型" prop="userType">
+        <el-radio-group v-model="user.userType">
+          <el-radio v-for="role in userTypeList" :label="role.id">{{ role.name }}</el-radio>
+        </el-radio-group>
+      </el-form-item>
+    </el-form>
+
+    <div slot="footer" class="dialog-footer">
+      <el-button type="primary" @click="saveOrUpdate">确定</el-button>
+      <el-button @click="showInfo = false">返回</el-button>
+    </div>
+  </el-dialog>
+
+
 </template>
 
 <script>
 import request from "@/utils/request";
+import {ElMessage, ElMessageBox} from 'element-plus'
+import {Delete, Edit} from "@element-plus/icons-vue";
 
 export default {
   name: "User",
+  components: {Delete, Edit, ElMessage, ElMessageBox},
   data() {
     return {
       params: {
@@ -94,17 +127,100 @@ export default {
         page: '1',
         limit: '10'
       },
+      showInfo: false,
+      user: {},
       page: {},
+      rules: {
+        username: [
+          {required: true, message: '请输入用户名', trigger: 'blur'}
+        ],
+        password: [
+          {required: true, message: '请输入密码', trigger: 'blur'},
+          {min: 3, message: '密码最少3位', trigger: 'blur'}
+        ],
+        userType: [
+          {required: true, message: '请选择角色', trigger: 'change'}
+        ]
+      },
+      userTypeList: [
+        {
+          id: 1,
+          name: '用户'
+        },
+        {
+          id: 2,
+          name: '员工'
+        },
+        {
+          id: 3,
+          name: '管理员'
+        }
+      ]
     }
   },
   methods: {
     add() {
+      this.showInfo = true
+      this.user = {}
     },
-    del() {
+    del(userId) {
+      ElMessageBox.confirm(
+          '是否删除选中的数据?',
+          'Warning',
+          {
+            confirmButtonText: '确认',
+            cancelButtonText: '取消',
+            type: 'warning',
+          }
+      )
+          .then(() => {
+            request.post('/sys/user/deleteById/' + userId).then(res => {
+              if (res.code === 200) {
+                ElMessage({
+                  type: 'success',
+                  message: '删除成功',
+                })
+                this.loadPage(false)
+              } else {
+                ElMessage({
+                  type: 'error',
+                  message: res.msg,
+                })
+              }
+            })
+
+          })
+          .catch(() => {
+            ElMessage({
+              type: 'info',
+              message: '取消删除',
+            })
+          })
     },
-    update() {
+    update(userId) {
+      this.showInfo = true
+      this.getUserInfo(userId)
+    },
+    saveOrUpdate() {
+      this.$refs['ruleForm'].validate((valid) => {
+        if (valid) {
+          let url = this.user.userId == null ? "sys/user/save" : "sys/user/update";
+          request.post(url, this.user).then(res => {
+            if (res.code === 200) {
+              this.$message.success('操作成功')
+              this.loadPage(false)
+              this.showInfo = false
+            } else {
+              this.$message.error(res.msg)
+            }
+          })
+        } else {
+          return false;
+        }
+      });
     },
     query() {
+      this.loadPage(false)
     },
     loadPage(flag) {
       if (flag) {
@@ -118,11 +234,15 @@ export default {
     listUser(params) {
       request.post('/sys/user/list', params).then(res => {
         if (res.code === 200) {
-
           this.page = res.page
         } else {
           this.$message.error(res.msg)
         }
+      })
+    },
+    getUserInfo(userId) {
+      request.post('/sys/user/info/' + userId).then(res => {
+        this.user = res.user
       })
     }
   },
