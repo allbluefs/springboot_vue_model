@@ -3,7 +3,7 @@
 
 <mapper namespace="com.allblue.modules.sys.dao.UserDao">
 
-	<!-- 可根据自己的需求，是否要使用 -->
+    <!-- 可根据自己的需求，是否要使用 -->
     <resultMap type="com.allblue.modules.sys.entity.UserEntity" id="tUserMap">
         <result property="userId" column="user_id"/>
         <result property="username" column="username"/>
@@ -12,6 +12,38 @@
         <result property="chineseName" column="chinese_name"/>
         <result property="phoneNumber" column="phone_number"/>
         <result property="status" column="status"/>
+        <association property="roleId" javaType="String" column="user_id" select="selectRoleId"/>
+        <association property="roleName" javaType="String" column="user_id" select="selectRoleName"/>
     </resultMap>
+    <!-- 查询用户的所有菜单ID -->
+    <select id="queryAllMenuId" resultType="java.lang.Long">
+        select distinct rm.menu_id
+        from sys_user_role ur
+                 LEFT JOIN sys_role_menu rm on ur.role_id = rm.role_id
+        where ur.user_id = #{userId}
+    </select>
+    <!--查询角色ID-->
+    <select id="selectRoleId" resultType="java.lang.Long">
+        select r.role_id
+        from sys_user_role ur
+                 LEFT JOIN sys_role r ON ur.role_id = r.role_id
+        where ur.user_id = #{user_id}
+    </select>
 
+    <!--查询角色名称-->
+    <select id="selectRoleName" resultType="java.lang.String">
+        select r.role_name
+        from sys_user_role ur
+                 LEFT JOIN sys_role r ON ur.role_id = r.role_id
+        where ur.user_id = #{user_id}
+    </select>
+
+    <!-- 查询用户的所有权限 -->
+    <select id="queryAllPerms" resultType="com.allblue.modules.sys.entity.MenuEntity">
+        select m.perms
+        from sys_user_role ur
+                 LEFT JOIN sys_role_menu rm on ur.role_id = rm.role_id
+                 LEFT JOIN sys_menu m on rm.menu_id = m.menu_id
+        where ur.user_id = #{userId}
+    </select>
 </mapper>

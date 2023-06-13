@@ -10,6 +10,7 @@ import com.allblue.utils.ContextHolderUtils;
 import com.allblue.utils.PageUtils;
 import com.allblue.utils.R;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,7 +30,6 @@ public class UserController {
     @RequestMapping("/list")
     public R list(@RequestBody Map<String, Object> params) {
         PageUtils page = userService.queryPage(params);
-
         return R.ok().put("page", page);
     }
 

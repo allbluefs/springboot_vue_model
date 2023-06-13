@@ -1,11 +1,16 @@
 package com.allblue.modules.sys.controller;
 
+import com.allblue.modules.sys.entity.LoginForm;
 import com.allblue.modules.sys.entity.UserEntity;
+import com.allblue.modules.sys.service.LoginService;
 import com.allblue.modules.sys.service.UserService;
+import com.allblue.modules.sys.shiro.CustomToken;
+import com.allblue.modules.sys.shiro.ShiroUtils;
 import com.allblue.utils.R;
-import com.allblue.utils.TokenUtils;
+import com.allblue.utils.RRException;
 import com.allblue.utils.VerifyUtil;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +32,8 @@ import java.util.List;
 public class LoginController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private LoginService loginService;
 
     @GetMapping("/getCode")
     public void getCode(HttpServletResponse response, HttpServletRequest request) throws Exception {
@@ -46,27 +53,9 @@ public class LoginController {
 
     @RequestMapping("/login")
     @ResponseBody
-    public R login(@RequestBody UserEntity user) {
-        UserEntity u = null;
-        u = userService.selectOne(new EntityWrapper<UserEntity>().eq("username", user.getUsername()));
-        if (null == u) {
-            return R.error("用户信息不存在");
-        } else {
-            if (!user.getPassword().equals(u.getPassword())) {
-                return R.error("账号或密码错误");
-            }
-        }
-        if (u.getStatus().equals(0)) {
-            return R.error("账户已被封禁");
-        }
-        String token = TokenUtils.genToken(u);
-        u.setToken(token);
-        List<Object> permissions= new ArrayList<>();
-        permissions.add("/home");
-        permissions.add("/user");
-        permissions.add("/menu");
-        u.setPermissions(permissions);
-        return R.ok("登录成功").put("user", u);
+    public R login(@RequestBody LoginForm loginForm) {
+        UserEntity user = loginService.login(loginForm);
+        return R.ok("登录成功").put("user", user);
     }
 
     @RequestMapping("/register")

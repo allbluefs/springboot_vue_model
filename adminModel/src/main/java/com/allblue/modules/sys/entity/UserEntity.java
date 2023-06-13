@@ -47,5 +47,10 @@ public class UserEntity implements Serializable {
 	@TableField(exist = false)
 	private String token;
 	@TableField(exist = false)
-	private List<Object> permissions;
+	private List<MenuEntity> permissions;
+
+	@TableField(exist=false)
+	private Long roleId;
+	@TableField(exist=false)
+	private String roleName;
 }

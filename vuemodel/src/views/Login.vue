@@ -74,6 +74,7 @@ export default {
                 message: "登录成功"
               })
               sessionStorage.setItem("user", JSON.stringify(res.user))  // 缓存用户信息
+              console.log(res.user)
               // 登录成功的时候更新当前路由
               this.$router.push("/")  //登录成功之后进行页面的跳转，跳转到主页
             } else {
@@ -94,17 +95,19 @@ export default {
 </script>
 
 <style scoped>
-.login{
+.login {
   width: 100%;
   height: 100%;
   /*如果想做背景图片 可以给标签一个class 直接添加背景图*/
   /*background-image: url("/");*/
 }
-.myStyle{
+
+.myStyle {
   width: 100%;
   height: 100%;
 }
-.loginForm{
+
+.loginForm {
   width: 450px;
   height: 430px;
   position: absolute;

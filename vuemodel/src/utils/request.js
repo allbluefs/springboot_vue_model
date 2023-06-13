@@ -1,6 +1,6 @@
 import axios from 'axios'
 import router from "@/router";
-
+import {ElMessage, ElMessageBox} from 'element-plus'
 const request = axios.create({
     baseURL: "/api",
     timeout: 5000
@@ -35,6 +35,7 @@ request.interceptors.request.use(config => {
 request.interceptors.response.use(
     response => {
         let res = response.data;
+        console.log('处理相应结果:',res)
         // 如果是返回的文件
         if (response.config.responseType === 'blob') {
             return res
@@ -46,7 +47,10 @@ request.interceptors.response.use(
         // 验证token
         if (res.code === 401) {
             console.error("token过期，重新登录")
-            this.$message.error(res.msg)
+            ElMessage({
+                type: 'error',
+                message: res.msg,
+            })
             router.push("/login")
         }
         return res;
