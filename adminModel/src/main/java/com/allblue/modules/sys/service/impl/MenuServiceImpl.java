@@ -24,7 +24,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, MenuEntity> implements
 
     @Override
     public List<MenuEntity> getUserMenuTree(Long userId) {
-        List<MenuEntity> list = new ArrayList<>();
+        List<MenuEntity> list;
         //系统管理员，拥有最高权限
         if (userId == 1) {
             list = this.selectList(new EntityWrapper<MenuEntity>().orderBy("order_num"));
@@ -45,18 +45,6 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, MenuEntity> implements
             }
         }
         return children;
-    }
-
-
-    private List<MenuEntity> getChildMenus(Long parnetId, List<MenuEntity> menuList) {
-        List<MenuEntity> childs = new ArrayList<>();
-        for (MenuEntity menu : menuList) {
-            if (menu.getParentId().equals(parnetId)) {
-                menu.setChildren(getChildMenus(menu.getMenuId(), menuList));
-                childs.add(menu);
-            }
-        }
-        return childs;
     }
 
     @Override

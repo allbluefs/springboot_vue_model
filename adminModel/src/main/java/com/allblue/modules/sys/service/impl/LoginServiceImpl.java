@@ -1,6 +1,5 @@
 package com.allblue.modules.sys.service.impl;
 
-import cn.hutool.jwt.JWTUtil;
 import com.allblue.modules.sys.entity.LoginForm;
 import com.allblue.modules.sys.entity.MenuEntity;
 import com.allblue.modules.sys.entity.UserEntity;
@@ -11,10 +10,8 @@ import com.allblue.modules.sys.shiro.ShiroUtils;
 import com.allblue.modules.sys.shiro.TokenUtils;
 import com.allblue.utils.RRException;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

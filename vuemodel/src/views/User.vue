@@ -1,5 +1,5 @@
 <template>
-  <div style="padding: 20px">
+  <div>
     <!--搜索-->
     <div style="float: left">
       <el-form :inline="true" :model="params" class="demo-form-inline">

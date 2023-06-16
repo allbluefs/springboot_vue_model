@@ -1,8 +1,9 @@
 <template>
-  <div style="height: 50px; line-height: 50px; border-bottom: 1px;background-color: #545c64; display: flex">
-    <div style="width: 200px; font-weight: bold; color: dodgerblue">后台管理</div>
-    <div style="flex: 1"></div>
-    <div style="width: 100px">
+  <el-row style="height: 100%;width: 100%; line-height: 60px;background-color: #545c64;">
+    <el-col :span="2">
+      <div style="width: 200px; font-weight: bold; color: dodgerblue">后台管理</div>
+    </el-col>
+    <el-col :span="2"  :offset="20">
       <el-dropdown>
         <span class="el-dropdown-link">
           <el-avatar :size="30" :src="user.avatar" style="position: relative; top: 10px"></el-avatar>
@@ -17,14 +18,14 @@
           </el-dropdown-menu>
         </template>
       </el-dropdown>
-    </div>
-  </div>
+    </el-col>
+  </el-row>
 </template>
 
 <script>
 export default {
   name: "Header",
-  props:['user']
+  props: ['user']
 }
 </script>
 

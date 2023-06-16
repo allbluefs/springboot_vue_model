@@ -81,26 +81,6 @@ public class RedisConfig extends CachingConfigurerSupport {
         return redisTemplate.opsForZSet();
     }
 
-//    @Bean
-    public RedisMessageListenerContainer redisMessageListenerContainer(RedisConnectionFactory factory, KeyExpiresMessegeListner keyExpiresMessegeListner){
-        //对于分页获取activeSession当时想法是：登录成功，lpush此User，lrang可以分页获取User。
-        // 维护list，监听过期的key（sessionId:sessionId）和删除的key，从list中删除对应的User，以达到实时获取在线用户
-        //但此方法不能用于分布式，因为此方法是发布订阅模式，每个App都会订阅key，这样会重复处理key造成性能浪费
-        //解决办法，用生产者消费者模式，或者一次性返回所有在线用户不分页了，这样以来如果在线用户多了就很蛋疼
-        //还是先一次性返回吧，也能用MQ解决
-        RedisMessageListenerContainer topicContainer = new RedisMessageListenerContainer();
-        topicContainer.setConnectionFactory(factory);
-        ExecutorService service = Executors.newFixedThreadPool(10);
-        topicContainer.setTaskExecutor(service);
-        Set<Topic> topics = new HashSet<>();
-//        topics.add(new ChannelTopic("__keyevent@0__:expired"));//psubscribe __keyevent@0__:expired, 0代表数据库编号
-//        topics.add(new ChannelTopic("__keyevent@0__:del"));
-        topics.add(new PatternTopic("__keyevent@*__:expired"));//对所有过期key监听
-        topics.add(new PatternTopic("__keyevent@*__:del"));//对所有删除key监听
-        topicContainer.addMessageListener(keyExpiresMessegeListner, topics);
-        return topicContainer;
-    }
-
     @Nullable
     @Override
     @Bean

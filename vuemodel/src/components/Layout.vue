@@ -1,11 +1,23 @@
 <template>
   <div>
-    <!--    头部-->
-    <Header :user="user"/>
-    <div style="display: flex;">
-      <Aside/>
-      <router-view style="flex: 1" @userInfo="refreshUser"/>
-    </div>
+
+    <el-container>
+      <el-header style="padding: 0 0">
+        <!--    头部-->
+        <Header :user="user"/>
+      </el-header>
+      <el-container>
+        <!--        侧栏-->
+        <el-aside style="width: 200px;">
+          <Aside/>
+        </el-aside>
+        <el-main>
+          <router-view @userInfo="refreshUser"/>
+        </el-main>
+      </el-container>
+    </el-container>
+
+
   </div>
 
 

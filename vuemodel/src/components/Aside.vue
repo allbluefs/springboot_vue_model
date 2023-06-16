@@ -1,33 +1,44 @@
 <template>
   <el-menu
-      style="width: 200px; height: calc(100vh - 50px)"
+      style="height: calc(100vh - 60px)"
       class="el-menu-vertical-demo"
       background-color="#545c64"
       text-color="#fff"
       active-text-color="#ffd04b"
       router
   >
-    <!--管理员-->
-    <el-menu-item index="/user">
-      <el-icon>
-        <User/>
-      </el-icon>
-      <span slot="title">用户管理</span>
-    </el-menu-item>
-    <el-menu-item index="/menu">
-      <el-icon>
-        <Menu/>
-      </el-icon>
-      <span slot="title">菜单管理</span>
-    </el-menu-item>
+    <template v-for="item in menuList">
+      <sub-menu :item="item"/>
+    </template>
   </el-menu>
 </template>
 
 <script>
-import { User, Edit, Search, Share, Upload,Menu } from '@element-plus/icons-vue'
+import {User, Edit, Search, Share, Upload, Menu} from '@element-plus/icons-vue'
+import SubMenu from "@/components/SubMenu";
+import request from "@/utils/request";
+
 export default {
   name: "Aside",
-  components:{Edit,User,Share,Upload,Search,Menu}
+  components: {SubMenu, Edit, User, Share, Upload, Search, Menu},
+  data() {
+    return {
+      menuList: []
+    }
+  },
+  methods: {
+    getUserMenu() {
+      request.post('/sys/menu/nav').then(res => {
+        this.menuList = res.menuList
+      }).catch(err => {
+        this.$message.error(err)
+      })
+    }
+  },
+  async mounted() {
+    await this.getUserMenu()
+  },
+
 }
 </script>
 

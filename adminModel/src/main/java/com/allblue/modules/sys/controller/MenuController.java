@@ -105,17 +105,12 @@ public class MenuController {
      */
     @RequestMapping("/delete")
     public R delete(@RequestBody Long menuId) {
-//        if(menuId <= 43){
-//            return R.error("系统菜单，不能删除");
-//        }
         //判断是否有子菜单或按钮
         List<MenuEntity> menuList = menuService.queryListParentId(menuId);
         if (menuList.size() > 0) {
             return R.error("请先删除子菜单或按钮");
         }
-
         menuService.deleteById(menuId);
-
         return R.ok();
     }
 

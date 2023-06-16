@@ -14,10 +14,18 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.session.Session;
+import org.apache.shiro.session.mgt.SessionManager;
+import org.apache.shiro.session.mgt.eis.MemorySessionDAO;
+import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.subject.support.DefaultSubjectContext;
+import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.Resource;
 import java.util.*;
 
 /**
@@ -65,8 +73,6 @@ public class UserRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(
             AuthenticationToken authcToken) throws AuthenticationException {
-        CustomToken customToken = (CustomToken) authcToken;
-        System.out.println("认证" + customToken.getUsername());
         //加这一步的目的是在Post请求的时候会先进认证，然后在到请求
         if (authcToken.getPrincipal() == null) {
             throw new RRException("未登录", 401);
@@ -75,14 +81,12 @@ public class UserRealm extends AuthorizingRealm {
         String name = authcToken.getPrincipal().toString();
         UserEntity user = userService.selectOne(new EntityWrapper<UserEntity>().eq("username", name));
         if (user == null) {
-            //这里返回后会报出对应异常
-            return null;
-        } else {
-            //这里验证authenticationToken和simpleAuthenticationInfo的信息
-            SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(user, user.getPassword(), getName());
-            System.out.println(simpleAuthenticationInfo);
-            return simpleAuthenticationInfo;
+            throw new UnknownAccountException("账号或密码不正确");
         }
+        //这里验证authenticationToken和simpleAuthenticationInfo的信息
+        SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(user, user.getPassword(), getName());
+        System.out.println(simpleAuthenticationInfo);
+        return simpleAuthenticationInfo;
     }
 
 }
