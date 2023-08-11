@@ -53,7 +53,7 @@
           prop=""
           label="操作">
         <template #default="scope">
-          <el-button type="primary" size="mini" circle
+          <el-button type="primary" size="small" circle
                      @click="update(scope.row.userId)">
             <el-icon>
               <Edit/>

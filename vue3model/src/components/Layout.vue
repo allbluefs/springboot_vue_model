@@ -23,38 +23,30 @@
 
 </template>
 
-<script>
-import Aside from "@/components/Aside";
-import Header from "@/components/Header";
+<script setup lang="ts">
+import Aside from "@/components/Aside.vue";
+import Header from "@/components/Header.vue";
 import request from "@/utils/request";
+import {ref,onMounted} from "vue";
 
+const user = ref({});
 
-export default {
-  name: "Layout",
-  components: {Aside, Header},
-  data() {
-    return {
-      user: {}
-    }
-  },
-  methods: {
-    refreshUser() {
-      let userJson = sessionStorage.getItem("user")
-      console.log(userJson)
-      if (!userJson) {
-        return
-      }
-      let userId = JSON.parse(userJson).userId
-      // 获取用户信息
-      request.get("/sys/user/info/" + userId).then(res => {
-        this.user = res
-      })
-    }
-  },
-  created() {
-    this.refreshUser()
-  },
-}
+const refreshUser = () => {
+  let userJson = sessionStorage.getItem("user");
+  if (!userJson) {
+    return;
+  }
+  let userId = JSON.parse(userJson).userId;
+  // 获取用户信息
+  request.get("/sys/user/info/" + userId).then(res => {
+    user.value = res.user;
+  });
+};
+
+onMounted(() => {
+  refreshUser();
+});
+
 </script>
 
 <style scoped>

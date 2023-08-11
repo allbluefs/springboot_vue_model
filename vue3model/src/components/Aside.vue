@@ -7,7 +7,7 @@
       active-text-color="#ffd04b"
       router
   >
-    <template v-for="item in menuList">
+    <template v-for="item in menuList" :key="item.menuId">
       <sub-menu :item="item"/>
     </template>
   </el-menu>

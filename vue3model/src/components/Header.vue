@@ -3,7 +3,7 @@
     <el-col :span="2">
       <div style="width: 200px; font-weight: bold; color: dodgerblue">后台管理</div>
     </el-col>
-    <el-col :span="2"  :offset="20">
+    <el-col :span="2" :offset="20">
       <el-dropdown>
         <span class="el-dropdown-link">
           <el-avatar :size="30" :src="user.avatar" style="position: relative; top: 10px"></el-avatar>
@@ -22,11 +22,10 @@
   </el-row>
 </template>
 
-<script>
-export default {
-  name: "Header",
-  props: ['user']
-}
+<script setup>
+import {defineProps} from 'vue';
+const props = defineProps(['user']);
+console.log("Header中用户信息打印",props.user.username)
 </script>
 
 <style scoped>

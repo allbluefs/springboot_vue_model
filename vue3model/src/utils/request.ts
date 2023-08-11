@@ -9,7 +9,6 @@ const request = axios.create({
 
 // 请求白名单，如果请求在白名单里面，将不会被拦截校验权限
 const whiteUrls = ["/login", '/register']
-
 // request 拦截器
 // 可以自请求发送前对请求做一些处理
 // 比如统一加token，对请求参数统一加密
@@ -35,7 +34,6 @@ request.interceptors.request.use(config => {
 request.interceptors.response.use(
     response => {
         let res = response.data;
-        console.log('处理相应结果:', res)
         // 如果是返回的文件
         if (response.config.responseType === 'blob') {
             return res
@@ -67,6 +65,8 @@ declare module "axios" {
         code: number;
         msg: string;
         // 这里追加你的参数
+        list:any;
+        user:any;
     }
     export function create(config?: AxiosRequestConfig): AxiosInstance;
 }

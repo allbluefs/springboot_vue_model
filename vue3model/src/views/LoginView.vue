@@ -34,7 +34,6 @@ const form = reactive({
 })
 
 const router = useRouter();
-
 const login = () => {
   console.log(form)
   loginRequest(form).then(res => {
@@ -58,24 +57,6 @@ const register = () => {
   router.push("/register")
 }
 
-import {onBeforeMount, onMounted, onBeforeUnmount, onUnmounted} from "vue";
-
-onBeforeMount(() => {
-  console.log("组件挂载前");
-});
-
-onMounted(() => {
-  sessionStorage.removeItem("user")
-  console.log("组件挂载完成");
-});
-
-onBeforeUnmount(() => {
-  console.log("组件卸载之前");
-});
-
-onUnmounted(() => {
-  console.log("组件卸载完成");
-});
 </script>
 <style scoped>
 .login {

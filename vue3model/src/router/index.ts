@@ -46,10 +46,9 @@ activeRouter()
 
 function activeRouter() {
     const userStr = sessionStorage.getItem("user")
-    console.log("当前登录用户" + userStr)
     if (userStr) {
         const user = JSON.parse(userStr)
-
+        console.log(user)
         interface Child {
             path: any;
             name: any;
@@ -73,6 +72,7 @@ function activeRouter() {
                 root.children.push(obj)
             })
         }
+        console.log("root为:",root)
         if (router) {
             router.addRoute(root)
         }
@@ -86,7 +86,9 @@ router.beforeEach((to, from, next) => {
         next()
         return
     }
+    console.log("topath:",to.path)
     const userString = sessionStorage.getItem("user");
+    console.log("跳转前判断",userString)
     const user = userString ? JSON.parse(userString) : {};
     if (!user.permissions || !user.permissions.length) {
         next('/login')
