@@ -25,7 +25,7 @@
 
 <script setup lang="ts">
 import Aside from "@/components/Aside.vue";
-import Header from "@/components/Header.vue";
+import Header from "@/components/Header.vue"
 import request from "@/utils/request";
 import {ref,onMounted} from "vue";
 

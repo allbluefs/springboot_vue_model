@@ -68,7 +68,6 @@
         </template>
       </el-table-column>
     </el-table>
-
     <div style="margin: 20px 30%">
       <el-pagination
           @size-change="handleSizeChange"
@@ -115,11 +114,10 @@
 <script>
 import request from "@/utils/request";
 import {ElMessage, ElMessageBox} from 'element-plus'
-import {Delete, Edit} from "@element-plus/icons-vue";
 
 export default {
   name: "User",
-  components: {Delete, Edit, ElMessage, ElMessageBox},
+  components: {},
   data() {
     return {
       params: {

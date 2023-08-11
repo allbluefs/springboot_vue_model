@@ -7,7 +7,7 @@
       <el-dropdown>
         <span class="el-dropdown-link">
           <el-avatar :size="30" :src="user.avatar" style="position: relative; top: 10px"></el-avatar>
-           {{ user.chineseName }}
+          {{ user.chineseName }}
           <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <template #dropdown>
@@ -23,11 +23,9 @@
 </template>
 
 <script setup>
-import {defineProps} from 'vue';
+import { defineProps } from 'vue';
 const props = defineProps(['user']);
-console.log("Header中用户信息打印",props.user.username)
+console.log("Header中用户信息打印", props.user.username)
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
