@@ -40,7 +40,7 @@
 
     <!-- 查询用户的所有权限 -->
     <select id="queryAllPerms" resultType="com.allblue.modules.sys.entity.MenuEntity">
-        select m.perms
+        select m.*
         from sys_user_role ur
                  LEFT JOIN sys_role_menu rm on ur.role_id = rm.role_id
                  LEFT JOIN sys_menu m on rm.menu_id = m.menu_id
