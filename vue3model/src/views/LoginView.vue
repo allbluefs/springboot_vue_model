@@ -22,7 +22,7 @@
 
 <script lang="ts" setup>
 import {reactive} from 'vue'
-import {useRouter} from "vue-router";
+import router from '@/router';
 import {loginRequest} from "@/api/login";
 import {ElMessage} from 'element-plus'
 
@@ -33,28 +33,21 @@ const form = reactive({
   role: 1
 })
 
-const router = useRouter();
 const login = () => {
   console.log(form)
   loginRequest(form).then(res => {
     if (res.code === 200) {
-      ElMessage({
-        message: 'Congrats, this is a success message.',
-        type: 'success',
-      })
+      ElMessage.success('登录成功')
       sessionStorage.setItem('user', JSON.stringify(res.user))
       router.push("/")
     } else {
-      ElMessage({
-        message: res.msg,
-        type: 'error',
-      })
+      ElMessage.error(res.msg)
     }
   })
 }
 
 const register = () => {
-  router.push("/register")
+  router.push("/")
 }
 
 </script>

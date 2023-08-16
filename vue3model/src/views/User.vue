@@ -190,29 +190,27 @@ const del = (userId: number) => {
       cancelButtonText: '取消',
       type: 'warning',
     }
-  )
-    .then(() => {
-      deleteUser(userId).then(res => {
-        if (res.code === 200) {
-          ElMessage({
-            type: 'success',
-            message: '删除成功',
-          })
-          loadPage()
-        } else {
-          ElMessage({
-            type: 'error',
-            message: res.msg,
-          })
-        }
-      })
+  ).then(() => {
+    deleteUser(userId).then(res => {
+      if (res.code === 200) {
+        ElMessage({
+          type: 'success',
+          message: '删除成功',
+        })
+        loadPage()
+      } else {
+        ElMessage({
+          type: 'error',
+          message: res.msg,
+        })
+      }
     })
-    .catch(() => {
-      ElMessage({
-        type: 'info',
-        message: '取消删除',
-      })
+  }).catch(() => {
+    ElMessage({
+      type: 'info',
+      message: '取消删除',
     })
+  })
 }
 const saveOrUpdate = (formEl: FormInstance | undefined) => {
   if (!formEl) return

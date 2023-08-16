@@ -1,7 +1,7 @@
 import request from "@/utils/request";
 
 // 查询详情
-export const userInfo = (userId: number) => {
+export const userInfo = (userId: number | null) => {
   return request.get("/sys/user/info/" + userId);
 };
 
@@ -15,7 +15,7 @@ export const listUser = (params: pageParams) => {
   return request.post("/sys/user/list", params);
 };
 
-type user = {
+type User = {
   userId: number | null;
   username: string;
   chineseName: string;
@@ -23,11 +23,11 @@ type user = {
 };
 
 // 保存用户
-export const saveUser = (user: user) => {
+export const saveUser = (user: User) => {
   return request.post("sys/user/save", user);
 };
 // 更新用户
-export const updateUser = (user: user) => {
+export const updateUser = (user: User) => {
   return request.post("sys/user/update", user);
 };
 //删除用户

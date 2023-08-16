@@ -4,7 +4,7 @@
     <el-container>
       <el-header style="padding: 0 0">
         <!--    头部-->
-        <Header :user="user" />
+        <Header :user="user" @refresh="refresh" />
       </el-header>
       <el-container>
         <!--        侧栏-->
@@ -22,12 +22,18 @@
 </template>
 
 <script setup lang="ts">
-import Aside from "@/components/Aside.vue";
-import Header from "@/components/Header.vue"
+import Aside from "@/components/layout/Aside.vue";
+import Header from "@/components/layout/Header.vue"
 import { userInfo } from "@/api/user";
 import { ref, onMounted } from "vue";
 
-const user = ref({});
+const user = ref({
+  userId:null,
+  username:'',
+  password:'',
+  chineseName:'',
+  avatar:''
+});
 
 const refreshUser = () => {
   let userJson = sessionStorage.getItem("user");
@@ -40,6 +46,11 @@ const refreshUser = () => {
     user.value = res.user;
   });
 };
+
+const refresh = (value:any)=>{
+  user.value = value
+  sessionStorage.setItem('user',JSON.stringify(value))
+}
 
 onMounted(() => {
   refreshUser();

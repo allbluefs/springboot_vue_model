@@ -1,6 +1,6 @@
-import axios, {AxiosRequestConfig} from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import router from "@/router";
-import {ElMessage} from 'element-plus'
+import { ElMessage } from 'element-plus'
 
 const request = axios.create({
     baseURL: "/api",
@@ -61,12 +61,12 @@ request.interceptors.response.use(
 
 // 声明返回的参数
 declare module "axios" {
-    interface AxiosResponse<T = any> {
+    interface AxiosResponse<> {
         code: number;
         msg: string;
         // 这里追加你的参数
-        list:any;
-        user:any;
+        list: any;
+        user: any;
     }
     export function create(config?: AxiosRequestConfig): AxiosInstance;
 }

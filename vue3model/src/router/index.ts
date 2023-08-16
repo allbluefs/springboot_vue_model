@@ -5,7 +5,7 @@ const routes: Array<RouteRecordRaw> = [
     path: "/",
     name: "Layout",
     redirect: "/home",
-    component: () => import("../components/Layout.vue"),
+    component: () => import("../components/layout/Layout.vue"),
     children: [
       {
         path: "/home",
@@ -21,6 +21,11 @@ const routes: Array<RouteRecordRaw> = [
         path: "/menu",
         name: "Menu",
         component: () => import("../views/Menu.vue"),
+      },
+      {
+        path: "/test",
+        name: "Test",
+        component: () => import("../views/test/Test.vue"),
       },
     ],
   },
@@ -64,7 +69,7 @@ function activeRouter() {
     } = {
       path: "/",
       name: "Layout",
-      component: () => import("../components/Layout.vue"),
+      component: () => import("../components/layout/Layout.vue"),
       redirect: "/home",
       children: [],
     };
