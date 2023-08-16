@@ -47,7 +47,7 @@ const router = createRouter({
 });
 
 // 在刷新页面的时候重置当前路由
-// activeRouter()
+activeRouter()
 
 function activeRouter() {
   const userStr = sessionStorage.getItem("user");

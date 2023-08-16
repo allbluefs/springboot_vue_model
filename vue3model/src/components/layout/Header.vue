@@ -23,27 +23,6 @@
 
 
   <!-- 用户详情  -->
-  <!-- <el-dialog v-model="userInfoView" title="个人信息修改" width="30%">
-    <el-form :model="userDB">
-      <el-form-item label="用户名" label-width="140px">
-        <el-input v-model="userDB.username" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="姓名" label-width="140px">
-        <el-input v-model="userDB.chineseName" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="手机号" label-width="140px">
-        <el-input v-model="userDB.phoneNumber" autocomplete="off" />
-      </el-form-item>
-    </el-form>
-    <template #footer>
-      <span class="dialog-footer">
-        <el-button @click="userInfoView = false">取消</el-button>
-        <el-button type="primary" @click="update">
-          确认
-        </el-button>
-      </span>
-    </template>
-  </el-dialog> -->
   <UserInfoView v-model:visible="userInfoView" v-model="userDB" @refreshUser="refreshUser"></UserInfoView>
 
 
@@ -52,8 +31,7 @@
 <script setup lang="ts">
 import router from '@/router';
 import UserInfoView from '../user/UserInfoView.vue';
-import { userInfo, updateUser } from '@/api/user';
-import { ElMessage } from 'element-plus';
+import { userInfo } from '@/api/user';
 import { ref } from 'vue';
 
 interface User {
@@ -63,7 +41,7 @@ interface User {
   chineseName: string;
   avatar: string;
 }
-const props = defineProps<{ user: User }>()
+defineProps<{ user: User }>()
 const emit = defineEmits(['refresh'])
 
 const userInfoView = ref(false)
@@ -78,16 +56,6 @@ const showUserInfo = (userId: number | null) => {
     if (res.code === 200) {
       userDB.value = res.user
       userInfoView.value = true
-    }
-  })
-}
-const update = () => {
-  updateUser(userDB.value).then(res => {
-    if (res.code === 200) {
-      ElMessage.success("更新成功")
-      sessionStorage.setItem("user", JSON.stringify(userDB.value));
-    } else {
-      ElMessage.error(res.msg)
     }
   })
 }

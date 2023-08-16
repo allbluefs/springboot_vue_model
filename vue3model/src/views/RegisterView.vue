@@ -1,6 +1,6 @@
 <template>
   <div class="loginForm">
-    <div style="font-size: 30px; text-align: center; padding: 30px 0; color: #333">欢迎登录</div>
+    <div style="font-size: 30px; text-align: center; padding: 30px 0; color: #333">欢迎注册</div>
     <el-card>
       <el-form :model="form">
         <el-form-item prop="username">
@@ -9,11 +9,17 @@
         <el-form-item prop="password">
           <el-input prefix-icon="el-icon-lock" v-model="form.password" show-password placeholder="请输入密码"></el-input>
         </el-form-item>
-        <el-form-item>
-          <el-button style="width: 100%" type="primary" @click="login">登 录</el-button>
+        <el-form-item prop="chineseName">
+          <el-input prefix-icon="el-icon-user-solid" v-model="form.chineseName" placeholder="请输入姓名"></el-input>
+        </el-form-item>
+        <el-form-item prop="phoneNumber">
+          <el-input prefix-icon="el-icon-user-solid" v-model="form.phoneNumber" placeholder="请输入手机号"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button style="width: 100%" type="primary" @click="register">注册</el-button>
+          <el-button style="width: 100%" type="primary" @click="register">注 册</el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button style="width: 100%" type="primary" @click="goLogin">返 回</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -22,39 +28,33 @@
 
 <script lang="ts" setup>
 import {reactive} from 'vue'
-import {useRouter} from "vue-router";
-import {loginRequest} from "@/api/login";
+import router from '@/router';
+import {registerRequest} from "@/api/login";
 import {ElMessage} from 'element-plus'
 
 // do not use same name with ref
 const form = reactive({
   username: '',
   password: '',
-  role: 1
+  chineseName:'',
+  phoneNumber:'',
+  roleId: 1
 })
 
-const router = useRouter();
-const login = () => {
+const register = () => {
   console.log(form)
-  loginRequest(form).then(res => {
+  registerRequest(form).then(res => {
     if (res.code === 200) {
-      ElMessage({
-        message: 'Congrats, this is a success message.',
-        type: 'success',
-      })
-      sessionStorage.setItem('user', JSON.stringify(res.user))
-      router.push("/")
+      ElMessage.success('成功')
+      router.push("/login")
     } else {
-      ElMessage({
-        message: res.msg,
-        type: 'error',
-      })
+      ElMessage.error(res.msg)
     }
   })
 }
 
-const register = () => {
-  router.push("/register")
+const goLogin = () => {
+  router.push("/login")
 }
 
 </script>
