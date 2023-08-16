@@ -10,17 +10,17 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "/home",
         name: "home",
-        component: () => import("../views/Home.vue"),
+        component: () => import("../views/system/Home.vue"),
       },
       {
         path: "/user",
         name: "User",
-        component: () => import("../views/User.vue"),
+        component: () => import("../views/system/User.vue"),
       },
       {
         path: "/menu",
         name: "Menu",
-        component: () => import("../views/Menu.vue"),
+        component: () => import("../views/system/Menu.vue"),
       },
       {
         path: "/test",
@@ -32,12 +32,12 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/login",
     name: "Login",
-    component: () => import("@/views/LoginView.vue"),
+    component: () => import("@/views/system/LoginView.vue"),
   },
   {
     path: "/register",
     name: "Register",
-    component: () => import("../views/RegisterView.vue"),
+    component: () => import("../views/system/RegisterView.vue"),
   },
 ];
 
