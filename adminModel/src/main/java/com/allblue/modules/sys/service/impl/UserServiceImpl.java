@@ -57,10 +57,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
     }
     @Override
     public void update(UserEntity user) {
-
-
         this.updateById(user);
-
         saveUserRoleRelation(user);
     }
     private void saveUserRoleRelation(UserEntity user) {

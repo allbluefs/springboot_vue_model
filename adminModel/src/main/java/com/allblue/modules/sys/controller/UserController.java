@@ -1,8 +1,10 @@
 package com.allblue.modules.sys.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
+import com.allblue.modules.sys.entity.MenuEntity;
 import com.allblue.modules.sys.entity.UserEntity;
 import com.allblue.modules.sys.service.UserService;
 
@@ -40,6 +42,8 @@ public class UserController {
     @RequestMapping("/info/{userId}")
     public R info(@PathVariable("userId") Long userId) {
         UserEntity user = userService.selectById(userId);
+        List<MenuEntity> perms = userService.queryAllPerms(user.getUserId());
+        user.setPermissions(perms);
         return R.ok().put("user", user);
     }
 
@@ -76,7 +80,8 @@ public class UserController {
     @RequestMapping("/update")
     public R update(@RequestBody UserEntity user) {
         userService.update(user);
-        return R.ok();
+        UserEntity userDB = userService.selectById(user.getUserId());
+        return R.ok().put("user",userDB);
     }
 
     /**
@@ -85,7 +90,6 @@ public class UserController {
     @RequestMapping("/delete")
     public R delete(@RequestBody Long[] ids) {
         userService.deleteBatchIds(Arrays.asList(ids));
-
         return R.ok();
     }
 
