@@ -2,12 +2,8 @@
   <span>Home</span>
 </template>
 
-<script>
-export default {
-  name: "Home"
-}
+<script setup>
+
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -1,13 +1,13 @@
 <template>
     <el-dialog v-model="visible" title="个人信息修改" width="30%">
-        <el-form :model="user">
-            <el-form-item label="用户名" label-width="140px">
+        <el-form :model="user" label-position="left">
+            <el-form-item label="用户名" label-width="100px">
                 <el-input v-model="user.username" autocomplete="off" />
             </el-form-item>
-            <el-form-item label="姓名" label-width="140px">
+            <el-form-item label="姓名" label-width="100px">
                 <el-input v-model="user.chineseName" autocomplete="off" />
             </el-form-item>
-            <el-form-item label="手机号" label-width="140px">
+            <el-form-item label="手机号" label-width="100px">
                 <el-input v-model="user.phoneNumber" autocomplete="off" />
             </el-form-item>
         </el-form>
@@ -65,4 +65,18 @@ const update = () => {
 
 </script>
 
-<style scoped></style>
+
+<style scoped>
+.el-button--text {
+  margin-right: 15px;
+}
+.el-select {
+  width: 350px;
+}
+.el-input {
+  width: 350px;
+}
+.dialog-footer button:first-child {
+  margin-right: 10px;
+}
+</style>

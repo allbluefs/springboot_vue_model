@@ -66,11 +66,7 @@ public class UserController {
         if (user.getPassword().length() < 6) {
             return R.error("密码至少6位");
         }
-        /*if(user.getPartysName()==null){
-            user.setPartysName(null);
-        }*/
         userService.save(user);
-
         return R.ok();
     }
 
@@ -123,9 +119,9 @@ public class UserController {
     }
 
     /**
-     * 删除
+     * 修改密码
      */
-    @RequestMapping("/password")
+    @RequestMapping("/updatePassword")
     public R password(@RequestParam Map<String, Object> params) {
         String password = (String) params.get("password");
         String newPassword = (String) params.get("newPassword");

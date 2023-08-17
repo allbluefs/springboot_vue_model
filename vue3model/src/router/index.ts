@@ -83,7 +83,6 @@ function activeRouter() {
         root.children.push(obj);
       });
     }
-    console.log("root为:", root);
     if (router) {
       router.addRoute(root);
     }
@@ -100,7 +99,6 @@ router.beforeEach((to, from, next) => {
   }
   console.log("topath:", to.path);
   const userString = sessionStorage.getItem("user");
-  console.log("跳转前判断", userString);
   const user = userString ? JSON.parse(userString) : {};
   if (!user.permissions || !user.permissions.length) {
     console.log("无权限1 跳转登录页");

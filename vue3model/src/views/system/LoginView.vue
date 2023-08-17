@@ -34,7 +34,6 @@ const form = reactive({
 })
 
 const login = () => {
-  console.log(form)
   loginRequest(form).then(res => {
     if (res.code === 200) {
       ElMessage.success('登录成功')
@@ -47,7 +46,7 @@ const login = () => {
 }
 
 const register = () => {
-  router.push("/")
+  router.push("/register")
 }
 
 </script>

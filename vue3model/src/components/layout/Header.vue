@@ -13,7 +13,7 @@
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item @click="showUserInfo(user.userId)">个人信息</el-dropdown-item>
-            <el-dropdown-item @click="$router.push('/password')">修改密码</el-dropdown-item>
+            <el-dropdown-item @click="showUpdatePassword">修改密码</el-dropdown-item>
             <el-dropdown-item @click="logout">退出系统</el-dropdown-item>
           </el-dropdown-menu>
         </template>
@@ -23,16 +23,17 @@
 
 
   <!-- 用户详情  -->
-  <UserInfoView v-model:visible="userInfoView" v-model="userDB" @refreshUser="refreshUser"></UserInfoView>
-
+  <UserInfo v-model:visible="userInfoView" v-model="userDB" @refreshUser="refreshUser"></UserInfo>
+  <PasswordUpdate v-model:visible="updatePasswordView"></PasswordUpdate>
 
 </template>
 
 <script setup lang="ts">
 import router from '@/router';
-import UserInfoView from '../user/UserInfoView.vue';
+import UserInfo from '../user/UserInfo.vue';
 import { userInfo } from '@/api/user';
 import { ref } from 'vue';
+import PasswordUpdate from '../user/PasswordUpdate.vue';
 
 interface User {
   userId: number | null;
@@ -44,6 +45,7 @@ interface User {
 defineProps<{ user: User }>()
 const emit = defineEmits(['refresh'])
 
+// 修改用户信息
 const userInfoView = ref(false)
 const userDB = ref({
   userId: null,
@@ -58,6 +60,12 @@ const showUserInfo = (userId: number | null) => {
       userInfoView.value = true
     }
   })
+}
+
+// 修改密码
+const updatePasswordView = ref(false)
+const showUpdatePassword = ()=>{
+  updatePasswordView.value = true
 }
 
 const refreshUser  = (value:any)=>{

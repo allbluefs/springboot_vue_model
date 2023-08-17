@@ -34,3 +34,11 @@ export const updateUser = (user: User) => {
 export const deleteUser = (userId: number) => {
   return request.post("/sys/user/deleteById/" + userId);
 };
+// 修改密码
+type PasswordForm = {
+  oldPassword: string;
+  newPassword: string;
+}
+export const updatePassword = (passwordForm: PasswordForm) => {
+  return request.post('/sys/user/updatePassword', passwordForm);
+}
