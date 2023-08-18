@@ -11,6 +11,7 @@
         <result property="userType" column="user_type"/>
         <result property="chineseName" column="chinese_name"/>
         <result property="phoneNumber" column="phone_number"/>
+        <result property="photo" column="photo"/>
         <result property="status" column="status"/>
         <association property="roleId" javaType="String" column="user_id" select="selectRoleId"/>
         <association property="roleName" javaType="String" column="user_id" select="selectRoleName"/>

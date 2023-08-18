@@ -6,7 +6,7 @@
     <el-col :span="2" :offset="20">
       <el-dropdown>
         <span class="el-dropdown-link">
-          <el-avatar :size="30" :src="user.avatar" style="position: relative; top: 10px"></el-avatar>
+          <el-avatar :size="30" :src="user.photo" style="position: relative; top: 10px"></el-avatar>
           {{ user.chineseName }}
           <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
@@ -40,7 +40,7 @@ interface User {
   username: string;
   password: string;
   chineseName: string;
-  avatar: string;
+  photo: string;
 }
 defineProps<{ user: User }>()
 const emit = defineEmits(['refresh'])

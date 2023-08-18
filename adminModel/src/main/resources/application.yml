@@ -44,3 +44,10 @@ mybatis-plus:
     call-setters-on-nulls: true
 file:
   location: D:/image/
+aliyun:
+  accesskeyid: LTAI5t6PV37ffnUhhXPPfBRh
+  accesskeysecret: PhWsQXtK3D0QJXpqHhrbknyY7Lb0jq
+  endpoint: oss-cn-beijing.aliyuncs.com
+  bucketname: bucket-allblue
+
+

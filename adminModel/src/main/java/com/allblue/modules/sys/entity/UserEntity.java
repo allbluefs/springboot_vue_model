@@ -37,6 +37,7 @@ public class UserEntity implements Serializable {
 	 * 电话号码
 	 */
 	private String phoneNumber;
+	private String photo;
 	/**
 	 * 1.正常 0.封禁
 	 */

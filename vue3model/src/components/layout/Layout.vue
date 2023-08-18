@@ -32,7 +32,7 @@ const user = ref({
   username:'',
   password:'',
   chineseName:'',
-  avatar:''
+  photo:''
 });
 
 const refreshUser = () => {

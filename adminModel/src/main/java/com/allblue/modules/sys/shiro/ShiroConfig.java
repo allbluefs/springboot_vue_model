@@ -51,6 +51,7 @@ public class ShiroConfig {
         filterMap.put("/sys/logout", "logout");
         // 对所有用户认证
         filterMap.put("/login", "anon");
+        filterMap.put("/uploadFile", "anon");
         filterMap.put("/register", "anon");
         filterMap.put("/**", "myFilter");
         shiroFilter.setFilterChainDefinitionMap(filterMap);

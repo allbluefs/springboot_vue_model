@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, reactive, onMounted } from 'vue';
+import { computed, ref, reactive } from 'vue';
 import { ElMessage, FormInstance, FormRules } from 'element-plus';
 import { updatePassword } from '@/api/user';
 
