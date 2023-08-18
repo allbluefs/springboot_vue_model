@@ -8,9 +8,11 @@ import com.allblue.modules.sys.entity.MenuEntity;
 import com.allblue.modules.sys.entity.UserEntity;
 import com.allblue.modules.sys.service.UserService;
 
+import com.allblue.modules.sys.shiro.ShiroUtils;
 import com.allblue.utils.ContextHolderUtils;
 import com.allblue.utils.PageUtils;
 import com.allblue.utils.R;
+import com.allblue.utils.RRException;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,16 +124,15 @@ public class UserController {
      * 修改密码
      */
     @RequestMapping("/updatePassword")
-    public R password(@RequestParam Map<String, Object> params) {
-        String password = (String) params.get("password");
+    public R password(@RequestBody Map<String, Object> params) {
+        String password = (String) params.get("oldPassword");
         String newPassword = (String) params.get("newPassword");
-        UserEntity user = ContextHolderUtils.getUser();
-        if (!user.getPassword().equals(password)) {
-            R.error("密码错误");
+        UserEntity userDB = userService.selectById(ShiroUtils.getUserId());
+        if (!userDB.getPassword().equals(password)) {
+            throw new RRException("密码错误");
         }
-        user.setPassword(newPassword);
-        userService.updateById(user);
-        System.out.println(params);
+        userDB.setPassword(newPassword);
+        userService.updateById(userDB);
         return R.ok();
     }
 }

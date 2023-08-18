@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, reactive } from 'vue';
+import { computed, ref, reactive, onMounted } from 'vue';
 import { ElMessage, FormInstance, FormRules } from 'element-plus';
 import { updatePassword } from '@/api/user';
 
@@ -44,13 +44,17 @@ interface PasswordForm {
     confirmPassword: string
 }
 const passwordFormRef = ref<FormInstance>()
-// const comparePassword = (rule: { required: true, message: '新密码不能为空', trigger: 'blur' }, value: string, callback: any) => {
-//     if (passwordForm.value.newPassword === '') {
-//         callback(new Error('请输入新密码'))
-//     }else{
-
-//     }
-// }
+const comparePassword = (rule: any, value: string, callback: any) => {
+    if (passwordForm.value.newPassword === '') {
+        callback(new Error('请输入新密码'))
+    } else {
+        if (passwordForm.value.newPassword !== passwordForm.value.confirmPassword) {
+            callback(new Error('两次密码不一致'))
+        } else {
+            callback()
+        }
+    }
+}
 const rules = reactive<FormRules<PasswordForm>>({
     oldPassword: [
         { required: true, message: '原密码不能为空', trigger: 'blur' },
@@ -62,6 +66,7 @@ const rules = reactive<FormRules<PasswordForm>>({
     ],
     confirmPassword: [
         { required: true, message: '新密码不能为空', trigger: 'blur' },
+        { validator: comparePassword, trigger: 'blur' }
     ]
 })
 const passwordForm = ref<PasswordForm>({
@@ -73,18 +78,24 @@ const update = async (formEl: FormInstance | undefined) => {
     if (!formEl) {
         return
     }
-    await formEl.validate(valid => {
+    await formEl.validate((valid, fields) => {
         if (valid) {
             updatePassword(passwordForm.value).then(res => {
                 if (res.code === 200) {
                     ElMessage.success('更新成功')
+                    passwordForm.value = {
+                        oldPassword: '',
+                        newPassword: '',
+                        confirmPassword: ''
+                    }
                     emit('update:visible', false)
                 } else {
                     ElMessage.error(res.msg)
                 }
             })
+        } else {
+            console.log('error submit!', fields)
         }
     })
-
 }
 </script>

@@ -30,7 +30,7 @@ export const saveUser = (user: User) => {
 export const updateUser = (user: User) => {
   return request.post("sys/user/update", user);
 };
-//删除用户
+// 删除用户
 export const deleteUser = (userId: number) => {
   return request.post("/sys/user/deleteById/" + userId);
 };
@@ -40,5 +40,5 @@ type PasswordForm = {
   newPassword: string;
 }
 export const updatePassword = (passwordForm: PasswordForm) => {
-  return request.post('/sys/user/updatePassword', passwordForm);
+  return request.post('/sys/user/updatePassword', JSON.stringify(passwordForm));
 }
