@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 /**
- * OSS上传工具类-张晗-2017/10/10
+ * OSS上传工具类
  */
 public class OSSUtil {
     private final static String END_POINT = "oss-cn-beijing.aliyuncs.com";
