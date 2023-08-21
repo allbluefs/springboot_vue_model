@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref,onMounted } from 'vue';
 import { updateUser } from '@/api/user';
 import { ElMessage, UploadProps } from 'element-plus';
 
@@ -54,6 +54,9 @@ const user = computed({
     set() {
         console.log(1)
     }
+})
+onMounted(()=>{
+    imageUrl.value = props.modelValue.photo
 })
 
 const update = () => {
@@ -82,9 +85,8 @@ const handleAvatarSuccess: UploadProps['onSuccess'] = (
     response,
     uploadFile
 ) => {
-    imageUrl.value = URL.createObjectURL(uploadFile.raw!)
-    console.log(response)
     console.log(uploadFile)
+    imageUrl.value = response.data.src
     user.value.photo = response.data.src
 }
 
