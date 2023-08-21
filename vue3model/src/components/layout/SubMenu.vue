@@ -1,9 +1,17 @@
 <template>
   <el-sub-menu :index="item.path" v-if="item.type === 0">
-    <template #title>{{ item.name }}</template>
+    <template #title>
+      <el-icon>
+        <component :is="item.icon"></component>
+      </el-icon>
+      <span>{{ item.name }}</span>
+    </template>
     <template v-for="child in item.children" :key="child.menuId">
       <el-menu-item :index="child.path" v-if="child.type === 1">
-        {{ child.name }}
+        <el-icon>
+          <component :is="child.icon"></component>
+        </el-icon>
+        <span>{{ child.name }}</span>
       </el-menu-item>
     </template>
     <template v-for="menuItem in item.children" :key="menuItem.menuId">
@@ -11,7 +19,10 @@
     </template>
   </el-sub-menu>
   <el-menu-item :index="item.path" v-else>
-    {{ item.name }}
+    <el-icon>
+      <component :is="item.icon"></component>
+    </el-icon>
+    <span>{{ item.name }}</span>
   </el-menu-item>
 </template>
 
@@ -21,6 +32,7 @@ interface MenuItem {
   path: string;
   type: number;
   name: string;
+  icon: string,
   children?: MenuItem[];
 }
 defineProps<{ item: MenuItem }>();

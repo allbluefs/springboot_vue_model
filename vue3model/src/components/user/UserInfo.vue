@@ -4,7 +4,7 @@
             <el-form-item label="头像" label-width="100px">
                 <el-upload class="avatar-uploader" action="http://127.0.0.1:8080/api/uploadFile" :show-file-list="false"
                     :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-                    <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+                    <img v-if="user.photo" :src="user.photo" class="avatar" />
                     <el-icon v-else class="avatar-uploader-icon">
                         <Plus />
                     </el-icon>
@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref,onMounted } from 'vue';
+import { computed } from 'vue';
 import { updateUser } from '@/api/user';
 import { ElMessage, UploadProps } from 'element-plus';
 
@@ -55,9 +55,6 @@ const user = computed({
         console.log(1)
     }
 })
-onMounted(()=>{
-    imageUrl.value = props.modelValue.photo
-})
 
 const update = () => {
     const userParam = {
@@ -79,14 +76,11 @@ const update = () => {
     })
 }
 
-const imageUrl = ref('')
-
 const handleAvatarSuccess: UploadProps['onSuccess'] = (
     response,
     uploadFile
 ) => {
     console.log(uploadFile)
-    imageUrl.value = response.data.src
     user.value.photo = response.data.src
 }
 
@@ -101,7 +95,7 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
 </script>
 
 
-<style>
+<style scoped>
 .el-button--text {
     margin-right: 15px;
 }
@@ -124,7 +118,7 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
     display: block;
 }
 
-.avatar-uploader .el-upload {
+.avatar-uploader /deep/ .el-upload {
     border: 1px dashed var(--el-border-color);
     border-radius: 6px;
     cursor: pointer;
@@ -133,7 +127,7 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
     transition: var(--el-transition-duration-fast);
 }
 
-.avatar-uploader .el-upload:hover {
+.avatar-uploader /deep/ .el-upload:hover {
     border-color: var(--el-color-primary);
 }
 
