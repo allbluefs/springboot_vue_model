@@ -1,117 +1,70 @@
 <template>
-  <el-tree
-    ref="treeRef"
-    :data="data"
-    show-checkbox
-    default-expand-all
-    node-key="id"
-    highlight-current
-    :props="defaultProps"
-  />
+  <el-table :data="menuData" style="width: 100%
+  margin-bottom: 20px" row-key="menuId" highlight-current-row>
 
-  <div class="buttons">
-    <el-button @click="getCheckedNodes">get by node</el-button>
-    <el-button @click="getCheckedKeys">get by key</el-button>
-    <el-button @click="setCheckedNodes">set by node</el-button>
-    <el-button @click="setCheckedKeys">set by key</el-button>
-    <el-button @click="resetChecked">reset</el-button>
-  </div>
+    <el-table-column prop="menuId" label="ID" width="100px" />
+    <el-table-column prop="name" label="菜单名称" />
+    <el-table-column prop="parentName" label="上级菜单" />
+    <el-table-column prop="" label="图标">
+      <template #default="scope">
+        <el-icon>
+          <component :is="scope.row.icon"></component>
+        </el-icon>
+      </template>
+    </el-table-column>
+    <el-table-column prop="type" label="类型">
+      <template #default="scope">
+        <el-tag v-if="scope.row.type === 0">目录</el-tag>
+        <el-tag v-if="scope.row.type === 1">菜单</el-tag>
+        <el-tag v-if="scope.row.type === 2">按钮</el-tag>
+      </template>
+    </el-table-column>
+    <el-table-column prop="perms" label="权限码" />
+    <el-table-column prop="orderNum" label="排序号" />
+    <el-table-column prop="path" label="菜单PATH" />
+    <el-table-column label="操作">
+      <template #default="scope">
+        <el-button size="small" circle type="primary" @click="handleEdit(scope.$index, scope.row)">
+          <el-icon>
+            <Edit />
+          </el-icon>
+        </el-button>
+        <el-button size="small" circle type="danger" @click="handleDelete(scope.$index, scope.row)">
+          <el-icon>
+            <Delete />
+          </el-icon>
+        </el-button>
+      </template>
+    </el-table-column>
+  </el-table>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { ElTree } from 'element-plus'
-import type Node from 'element-plus/es/components/tree/src/model/node'
+import { ref, onMounted } from 'vue';
+import { menuTree } from '@/api/menu';
+interface MenuItem {
+  menuId: number
+  path: string
+  type: number
+  name: string
+  parentName: string
+  icon: string
+  children?: MenuItem[]
+}
+const menuData = ref<MenuItem[]>()
+onMounted(() => {
+  menuTree().then(res => {
+    menuData.value = res.data
+  })
+})
 
-interface Tree {
-  id: number
-  label: string
-  children?: Tree[]
-}
-
-const treeRef = ref<InstanceType<typeof ElTree>>()
-
-const getCheckedNodes = () => {
-  console.log(treeRef.value?.getCheckedNodes(false, false))
-}
-const getCheckedKeys = () => {
-  console.log(treeRef.value?.getCheckedKeys(false))
-}
-const setCheckedNodes = () => {
-  treeRef.value?.setCheckedNodes(
-    [
-      {
-        id: 5,
-        label: 'Level two 2-1',
-      },
-      {
-        id: 9,
-        label: 'Level three 1-1-1',
-      },
-    ] as Node[],
-    false
-  )
-}
-const setCheckedKeys = () => {
-  treeRef.value?.setCheckedKeys([3], false)
-}
-const resetChecked = () => {
-  treeRef.value?.setCheckedKeys([], false)
+const handleEdit = (index: any, row: any) => {
+  console.log(index, row)
 }
 
-const defaultProps = {
-  children: 'children',
-  label: 'label',
+const handleDelete = (index: any, row: any) => {
+  console.log(index, row)
 }
 
-const data: Tree[] = [
-  {
-    id: 1,
-    label: 'Level one 1',
-    children: [
-      {
-        id: 4,
-        label: 'Level two 1-1',
-        children: [
-          {
-            id: 9,
-            label: 'Level three 1-1-1',
-          },
-          {
-            id: 10,
-            label: 'Level three 1-1-2',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: 2,
-    label: 'Level one 2',
-    children: [
-      {
-        id: 5,
-        label: 'Level two 2-1',
-      },
-      {
-        id: 6,
-        label: 'Level two 2-2',
-      },
-    ],
-  },
-  {
-    id: 3,
-    label: 'Level one 3',
-    children: [
-      {
-        id: 7,
-        label: 'Level two 3-1',
-      },
-      {
-        id: 8,
-        label: 'Level two 3-2',
-      },
-    ],
-  },
-]
+
 </script>

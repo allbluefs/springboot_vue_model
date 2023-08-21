@@ -25,13 +25,13 @@ public class MenuController {
     @RequestMapping("/nav")
     public R nav() {
         List<MenuEntity> menuList = menuService.getUserMenuTree(ShiroUtils.getUserId());
-        return R.ok().put("menuList", menuList);
+        return R.ok().put("data", menuList);
     }
 
     @RequestMapping("/getTreeMenu")
     public R getTreeMenu() {
         List<MenuEntity> menuList = menuService.getTreeMenu();
-        return R.ok().put("menuList", menuList);
+        return R.ok().put("data", menuList);
     }
 
     /**

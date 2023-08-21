@@ -15,7 +15,7 @@ import { onMounted, ref } from "vue";
 const menuList = ref({})
 const getUserMenu = () => {
   userMenu().then(res => {
-    menuList.value = res.menuList
+    menuList.value = res.data
   }).catch(err => {
     ElMessage.error(err)
   })
