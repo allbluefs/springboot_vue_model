@@ -24,6 +24,7 @@
 
   <!-- 用户详情  -->
   <UserInfo v-model:visible="userInfoView" v-model="userDB" @refreshUser="refreshUser"></UserInfo>
+  <!-- 修改密码 -->
   <PasswordUpdate v-model:visible="updatePasswordView"></PasswordUpdate>
 </template>
 
@@ -112,4 +113,5 @@ const logout = () => {
 
 .dialog-footer button:first-child {
   margin-right: 10px;
-}</style>
+}
+</style>

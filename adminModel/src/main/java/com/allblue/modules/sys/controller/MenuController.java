@@ -77,7 +77,7 @@ public class MenuController {
         } else {
             menu.setParentName("一级菜单");
         }
-        return R.ok().put("menu", menu);
+        return R.ok().put("data", menu);
     }
 
     /**
@@ -103,8 +103,8 @@ public class MenuController {
     /**
      * 删除
      */
-    @RequestMapping("/delete")
-    public R delete(@RequestBody Long menuId) {
+    @RequestMapping("/deleteById/{menuId}")
+    public R deleteById(@PathVariable("menuId") Long menuId) {
         //判断是否有子菜单或按钮
         List<MenuEntity> menuList = menuService.queryListParentId(menuId);
         if (menuList.size() > 0) {
