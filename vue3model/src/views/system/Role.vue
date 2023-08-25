@@ -96,6 +96,7 @@ const rules = reactive<FormRules>({})
 const query = () => {
     loadPage()
 }
+
 const add = () => {
     role.value = {}
     getMenuTree()
