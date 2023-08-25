@@ -50,7 +50,7 @@
     </div>
 
 
-    <el-dialog v-model="showInfo">
+    <el-dialog v-model="showInfo" style="width: 30%;">
         <el-form :model="role" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
             <el-form-item label="名称" prop="roleName">
                 <el-input v-model="role.roleName" auto-complete="new-password"></el-input>
@@ -76,7 +76,6 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue';
 import { ElMessage, ElMessageBox, FormRules, FormInstance, ElTree } from 'element-plus';
-import type Node from 'element-plus/es/components/tree/src/model/node'
 import { roleInfo, listRole, saveRole, updateRole, deleteRole } from '@/api/role';
 import { menuTree } from '@/api/menu';
 let params = reactive({
@@ -230,3 +229,9 @@ onMounted(() => {
     loadPage()
 })
 </script>
+
+<style scoped>
+.el-input {
+    width: 350px;
+}
+</style>
