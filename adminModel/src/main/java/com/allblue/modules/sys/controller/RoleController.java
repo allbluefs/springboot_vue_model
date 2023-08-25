@@ -54,7 +54,6 @@ public class RoleController {
         role.setMenuIdList(menuIdList);
 
 
-
         return R.ok().put("role", role);
     }
 
@@ -81,10 +80,9 @@ public class RoleController {
     /**
      * 删除
      */
-    @RequestMapping("/delete")
-    public R delete(@RequestBody Long[] roleIds) {
-        roleService.deleteBatchIds(roleIds);
-
+    @RequestMapping("/deleteById/{roleId}")
+    public R deleteById(@PathVariable("roleId") Long roleId) {
+        roleService.deleteById(roleId);
         return R.ok();
     }
 
@@ -98,7 +96,7 @@ public class RoleController {
             if (count > 0) {
                 return R.ok().put("valid", false);
             }
-        }else {
+        } else {
             int count = roleService.selectCount(new EntityWrapper<RoleEntity>().eq("role_name", roleEntity.getRoleName()).ne("role_id", roleEntity.getRoleId()));
             if (count > 0) {
                 return R.ok().put("valid", false);

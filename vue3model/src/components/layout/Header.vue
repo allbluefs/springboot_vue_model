@@ -7,7 +7,7 @@
       <el-dropdown>
         <span class="el-dropdown-link">
           <el-avatar :size="30" :src="user.photo" style="position: relative; top: 10px"></el-avatar>
-          {{ user.chineseName }}
+          <span style="color: white;"> {{ user.chineseName }}</span>
           <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <template #dropdown>
